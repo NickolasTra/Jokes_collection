@@ -11,6 +11,9 @@
                     <button @click="activeTab = 'collection'"
                         :class="['tab-button', { 'tab-button-active': activeTab === 'collection' }]">
                         My Collection
+                        <span v-if="totalJokes > 0" class="collection-count">
+                            {{ totalJokes }}
+                        </span>
                     </button>
                 </nav>
             </div>
@@ -25,18 +28,20 @@
 
             <!-- Collection Tab -->
             <div v-else-if="activeTab === 'collection'">
-                <div class="text-center">
-                    <h3 class="text-xl text-black font-semibold mb-2">Your Collection</h3>
-                    <p class="text-md text-black">Save your favorite jokes</p>
-                </div>
+                <JokeCollection />
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import JokeDiscovery from './jokes/JokeDiscovery.vue'
+import JokeCollection from './jokes/JokeCollection.vue'
+import { useJokeCollection } from '@/composables/useJokeCollection'
 
 const activeTab = ref<'discover' | 'collection'>('discover')
+const { collectionStats } = useJokeCollection()
+
+const totalJokes = computed(() => collectionStats.value.totalJokes || 0)
 </script>
