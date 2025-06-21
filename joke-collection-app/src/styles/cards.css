@@ -1,0 +1,17 @@
+@layer components {
+  .joke-card {
+    @apply bg-white rounded-lg shadow-lg p-6 mx-auto w-5/6 h-64 sm:h-56 flex flex-col;
+  }
+  
+  .joke-badge {
+    @apply px-2 py-1 rounded-lg text-xs font-semibold bg-blue-600 text-white uppercase;
+  }
+  
+  .joke-setup {
+    @apply text-lg font-medium text-black;
+  }
+  
+  .joke-punchline {
+    @apply text-gray-700 italic;
+  }
+}

@@ -1,3 +1,7 @@
+@import '../styles/tabs.css';
+@import '../styles/buttons.css';
+@import '../styles/cards.css';
+@import '../styles/discovery.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -1,0 +1,33 @@
+@layer components {
+  .toggle-button {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200 bg-gray-200 text-black hover:bg-gray-300;
+  }
+  
+  .toggle-button-active {
+    @apply bg-blue-600 text-white hover:bg-blue-800;
+  }
+
+  .btn-primary {
+    @apply w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply w-full bg-gray-200 hover:bg-gray-300 text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+
+  .btn-action {
+    @apply bg-green-600 hover:bg-green-800 disabled:bg-green-400 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200;
+  }
+  
+  .btn-retry {
+    @apply bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+
+  .btn-green {
+    @apply bg-green-600 hover:bg-green-800 disabled:bg-green-400 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200;
+  }
+
+  .btn-error {
+    @apply bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+}
