@@ -15,7 +15,7 @@
     </div>
     
     <!-- Punchline Section -->
-    <div class="space-y-3">
+    <div class="flex-1 flex flex-col justify-between">
       <div class="h-12 flex items-center">
         <div v-if="showPunchline" class="transition-all duration-300 ease-in-out w-full">
           <p class="joke-punchline">
@@ -24,21 +24,23 @@
         </div>
       </div>
       
-      <button
-        v-if="!showPunchline"
-        @click="revealPunchline"
-        class="btn-primary"
-      >
-        Show Punchline
-      </button>
-      
-      <button
-        v-else
-        @click="hidePunchline"
-        class="btn-secondary"
-      >
-        Hide Punchline
-      </button>
+      <div>
+        <button
+          v-if="!showPunchline"
+          @click="revealPunchline"
+          class="btn-primary"
+        >
+          Show Punchline
+        </button>
+        
+        <button
+          v-else
+          @click="hidePunchline"
+          class="btn-secondary"
+        >
+          Hide Punchline
+        </button>
+      </div>
     </div>
   </div>
 </template>
