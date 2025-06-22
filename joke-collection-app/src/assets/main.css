@@ -2,6 +2,7 @@
 @import '../styles/buttons.css';
 @import '../styles/cards.css';
 @import '../styles/discovery.css';
+@import '../styles/collection.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

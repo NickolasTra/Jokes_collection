@@ -1,0 +1,81 @@
+@layer components {
+  .collection-controls {
+    @apply max-w-4xl mx-auto mb-8 space-y-4;
+  }
+  
+  .search-container {
+    @apply relative max-w-md mx-auto;
+  }
+  
+  .search-input {
+    @apply w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base;
+  }
+  
+  .search-icon {
+    @apply absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg;
+  }
+  
+  .filter-container {
+    @apply flex justify-center;
+  }
+  
+  .filter-group {
+    @apply flex flex-col sm:flex-row items-center gap-2;
+  }
+  
+  .filter-label {
+    @apply text-sm font-medium text-gray-700 whitespace-nowrap;
+  }
+  
+  .filter-select {
+    @apply px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm bg-white;
+  }
+  
+  .clear-filters-container {
+    @apply text-center;
+  }
+  
+  .clear-filters-btn {
+    @apply px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-lg transition-colors duration-200 text-sm;
+  }
+  
+  .results-counter {
+    @apply text-center text-sm text-gray-600 mb-4 font-medium;
+  }
+  
+  .empty-state {
+    @apply text-center py-12;
+  }
+  
+  .empty-state h4 {
+    @apply text-xl text-gray-800 mb-2;
+  }
+  
+  .empty-state p {
+    @apply text-gray-600;
+  }
+  
+  .jokes-list {
+    @apply space-y-6;
+  }
+  
+  .joke-item-date {
+    @apply text-center mt-2;
+  }
+  
+  .collection-stats {
+    @apply flex justify-center space-x-6 mt-4;
+  }
+  
+  .stat-item {
+    @apply text-center;
+  }
+  
+  .stat-value {
+    @apply block text-2xl font-bold text-blue-600;
+  }
+  
+  .stat-label {
+    @apply text-sm text-gray-600;
+  }
+}
