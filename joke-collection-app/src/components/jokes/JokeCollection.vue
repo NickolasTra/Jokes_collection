@@ -3,23 +3,37 @@
     <!-- Header with Statistics -->
     <div class="text-center mb-8">
       <h3 class="discovery-title">Your Joke Collection</h3>
+      <div class="collection-stats">
+        <div class="stat-item">
+          <span class="stat-value">{{ collectionStats.totalJokes }}</span>
+          <span class="stat-label">Total Jokes</span>
+        </div>
+        <div class="stat-item" v-if="collectionStats.ratedJokes > 0">
+          <span class="stat-value">{{ collectionStats.averageRating }}</span>
+          <span class="stat-label">Avg Rating</span>
+        </div>
+        <div class="stat-item" v-if="collectionStats.ratedJokes > 0">
+          <span class="stat-value">{{ collectionStats.ratedJokes }}</span>
+          <span class="stat-label">Rated Jokes</span>
+        </div>
+      </div>
     </div>
 
     <div>
       <!-- Empty State -->
-      <div v-if="savedJokesLength === 0" class="empty-state">
+      <div v-if="savedJokes?.length === 0" class="empty-state">
           <h4 class="text-center text-black text-xl">0 results found</h4>
       </div>
 
       <!-- Jokes List -->
       <div v-else class="space-y-6">
         <div
-          v-for="joke in savedJokesArray"
-          :key="`${joke.id}`"
+          v-for="joke in savedJokes"
+          :key="joke.id"
         >
           <JokeCard 
             :joke="joke" 
-            :is-in-collection="true"
+            :show-rating="true"
           />
           <div>
             <p class="text-center mt-2">
@@ -33,14 +47,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useJokeCollection } from '@/composables/useJokeCollection'
 import JokeCard from './JokeCard.vue'
 
-const { savedJokes } = useJokeCollection()
-
-const savedJokesArray = computed(() => savedJokes.value || [])
-const savedJokesLength = computed(() => savedJokesArray.value.length)
+const { savedJokes, collectionStats } = useJokeCollection()
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString)

@@ -54,4 +54,36 @@
   .heart-filled {
     @apply animate-pulse;
   }
+
+  .star-button-compact {
+    @apply text-sm hover:scale-110 transition-transform duration-150 cursor-pointer filter grayscale opacity-60 hover:opacity-100;
+  }
+
+  .star-button-compact.star-active {
+    @apply filter-none opacity-100;
+  }
+
+  .collection-stats {
+    @apply flex justify-center space-x-6 mt-4;
+  }
+
+  .stat-item {
+    @apply text-center;
+  }
+
+  .stat-value {
+    @apply block text-2xl font-bold text-blue-600;
+  }
+
+  .stat-label {
+    @apply text-sm text-gray-600;
+  }
+
+  .star-button-compact {
+    @apply text-sm hover:scale-110 transition-transform duration-150 cursor-pointer filter grayscale opacity-60 hover:opacity-100;
+  }
+
+  .star-button-compact.star-active {
+    @apply filter-none opacity-100;
+  }
 }

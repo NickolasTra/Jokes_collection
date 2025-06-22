@@ -3,52 +3,45 @@ import type { Joke } from '@/types'
 
 export interface SavedJoke extends Joke {
   savedAt: string
+  rating?: number
 }
 
-let sharedState: {
-  savedJokes: ReturnType<typeof ref<SavedJoke[]>>
-  isInitialized: boolean
-} | null = null
+// Create the reactive state outside the function but inside the module
+const savedJokes = ref<SavedJoke[]>([])
+let isInitialized = false
+
+// Load collection immediately when module is imported
+const loadCollection = () => {
+  if (isInitialized) return
+  
+  try {
+    const stored = localStorage.getItem('joke-collection')
+    if (stored) {
+      savedJokes.value = JSON.parse(stored)
+    }
+  } catch (error) {
+    console.error('Failed to load collection from localStorage:', error)
+    savedJokes.value = []
+  }
+  
+  isInitialized = true
+}
+
+// Save jokes to localStorage
+const saveToStorage = () => {
+  try {
+    localStorage.setItem('joke-collection', JSON.stringify(savedJokes.value))
+  } catch (error) {
+    console.error('Failed to save collection to localStorage:', error)
+  }
+}
+
+// Initialize immediately
+loadCollection()
 
 export function useJokeCollection() {
-  if (!sharedState) {
-    sharedState = {
-      savedJokes: ref<SavedJoke[]>([]),
-      isInitialized: false
-    }
-  }
-
-  const savedJokes = sharedState.savedJokes
-
-  // Load jokes from localStorage on initialization
-  const loadCollection = () => {
-    if (sharedState!.isInitialized) return
-    
-    try {
-      const stored = localStorage.getItem('joke-collection')
-      if (stored) {
-        savedJokes.value = JSON.parse(stored)
-      }
-    } catch (error) {
-      console.error('Failed to load collection from localStorage:', error)
-      savedJokes.value = []
-    }
-    
-    sharedState!.isInitialized = true
-  }
-
-  // Save jokes to localStorage
-  const saveToStorage = () => {
-    try {
-      localStorage.setItem('joke-collection', JSON.stringify(savedJokes.value))
-    } catch (error) {
-      console.error('Failed to save collection to localStorage:', error)
-    }
-  }
-
   // Check if a joke is already saved
   const isJokeSaved = (jokeId: number) => {
-    if (!savedJokes.value) return false
     return savedJokes.value.some(joke => joke.id === jokeId)
   }
 
@@ -60,12 +53,8 @@ export function useJokeCollection() {
 
     const savedJoke: SavedJoke = {
       ...joke,
-      savedAt: new Date().toISOString()
-    }
-
-    // Ensure savedJokes.value is initialized
-    if (!savedJokes.value) {
-      savedJokes.value = []
+      savedAt: new Date().toISOString(),
+      rating: undefined
     }
 
     savedJokes.value.unshift(savedJoke) // Add to beginning
@@ -75,11 +64,6 @@ export function useJokeCollection() {
 
   // Remove a joke from collection
   const removeJoke = (jokeId: number) => {
-    // Ensure savedJokes.value exists
-    if (!savedJokes.value) {
-      return false
-    }
-
     const index = savedJokes.value.findIndex(joke => joke.id === jokeId)
     if (index !== -1) {
       savedJokes.value.splice(index, 1)
@@ -89,17 +73,30 @@ export function useJokeCollection() {
     return false
   }
 
+  // Rate a joke (1-5 stars)
+  const rateJoke = (jokeId: number, rating: number) => {
+    const joke = savedJokes.value.find(joke => joke.id === jokeId)
+    if (joke && rating >= 1 && rating <= 5) {
+      joke.rating = rating
+      saveToStorage()
+      return true
+    }
+    return false
+  }
+
   // Collection statistics
   const collectionStats = computed(() => {
-    const total = savedJokes.value?.length || 0
+    const total = savedJokes.value.length
+    const ratedJokes = savedJokes.value.filter(joke => joke.rating !== undefined)
+    const totalRating = ratedJokes.reduce((sum, joke) => sum + (joke.rating || 0), 0)
+    const averageRating = ratedJokes.length > 0 ? totalRating / ratedJokes.length : 0
 
     return {
-      totalJokes: total
+      totalJokes: total,
+      ratedJokes: ratedJokes.length,
+      averageRating: Math.round(averageRating * 10) / 10 // Round to 1 decimal
     }
   })
-
-  // Initialize collection on first use
-  loadCollection()
 
   return {
     // State
@@ -111,6 +108,7 @@ export function useJokeCollection() {
     // Actions
     saveJoke,
     removeJoke,
+    rateJoke,
     isJokeSaved,
     loadCollection
   }
