@@ -36,7 +36,7 @@
 
     <!-- Punchline Section -->
     <div class="flex-1 flex flex-col justify-between">
-      <div class="h-12 flex items-center">
+      <div class="flex-1 flex items-center">
         <div v-if="showPunchline" class="transition-all duration-300 ease-in-out w-full">
           <p class="joke-punchline">
             {{ joke.punchline }}
@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <div>
+      <div class="mt-auto">
         <button v-if="!showPunchline" @click="revealPunchline" class="btn-primary">
           Show Punchline
         </button>

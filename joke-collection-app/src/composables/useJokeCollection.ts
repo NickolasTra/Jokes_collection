@@ -6,11 +6,11 @@ export interface SavedJoke extends Joke {
   rating?: number
 }
 
-// Create the reactive state outside the function but inside the module
+// Shared across all instances
 const savedJokes = ref<SavedJoke[]>([])
 let isInitialized = false
 
-// Load collection immediately when module is imported
+// Load collection
 const loadCollection = () => {
   if (isInitialized) return
   
@@ -36,7 +36,7 @@ const saveToStorage = () => {
   }
 }
 
-// Initialize immediately
+// Initialize
 loadCollection()
 
 export function useJokeCollection() {
@@ -48,7 +48,7 @@ export function useJokeCollection() {
   // Add a joke to collection
   const saveJoke = (joke: Joke) => {
     if (isJokeSaved(joke.id)) {
-      return false // Already saved
+      return false
     }
 
     const savedJoke: SavedJoke = {
@@ -57,7 +57,7 @@ export function useJokeCollection() {
       rating: undefined
     }
 
-    savedJokes.value.unshift(savedJoke) // Add to beginning
+    savedJokes.value.unshift(savedJoke)
     saveToStorage()
     return true
   }
@@ -94,7 +94,7 @@ export function useJokeCollection() {
     return {
       totalJokes: total,
       ratedJokes: ratedJokes.length,
-      averageRating: Math.round(averageRating * 10) / 10 // Round to 1 decimal
+      averageRating: Math.round(averageRating * 10) / 10
     }
   })
 

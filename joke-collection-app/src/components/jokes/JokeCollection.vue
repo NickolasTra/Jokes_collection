@@ -27,19 +27,35 @@
         <div class="search-icon">🔍</div>
       </div>
 
-      <!-- Rating Filter -->
-      <div class="filter-container">
-        <div class="filter-group">
-          <label class="filter-label">Filter by Rating:</label>
-          <select v-model="selectedRatingFilter" class="filter-select">
-            <option value="all">All Ratings</option>
-            <option value="unrated">Unrated</option>
-            <option value="1">1 Star</option>
-            <option value="2">2 Stars</option>
-            <option value="3">3 Stars</option>
-            <option value="4">4 Stars</option>
-            <option value="5">5 Stars</option>
-          </select>
+      <div class="flex row justify-center space-x-4">
+        <!-- Rating Filter -->
+        <div class="filter-container">
+          <div class="filter-group">
+            <label class="filter-label">Filter by Rating:</label>
+            <select v-model="selectedRatingFilter" class="filter-select">
+              <option value="all">All Ratings</option>
+              <option value="unrated">Unrated</option>
+              <option value="1">1 Star</option>
+              <option value="2">2 Stars</option>
+              <option value="3">3 Stars</option>
+              <option value="4">4 Stars</option>
+              <option value="5">5 Stars</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Sort Dropdown -->
+        <div class="filter-container">
+          <div class="filter-group">
+            <label class="filter-label">Sort by:</label>
+            <select v-model="sortBy" class="filter-select">
+              <option value="all">Date Added</option>
+              <option value="rating-high">Rating (High to Low)</option>
+              <option value="rating-low">Rating (Low to High)</option>
+              <option value="alpha-az">Alphabetically (A to Z)</option>
+              <option value="alpha-za">Alphabetically (Z to A)</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -87,19 +103,21 @@ const { savedJokes, collectionStats } = useJokeCollection()
 // Search and filter state
 const searchQuery = ref('')
 const selectedRatingFilter = ref<string>('all')
+const sortBy = ref<string>('all')
 
 // Check if any filters are active
 const hasActiveFilters = computed(() => {
-  return searchQuery.value.trim() !== '' || selectedRatingFilter.value !== 'all'
+  return searchQuery.value.trim() !== '' || selectedRatingFilter.value !== 'all' || sortBy.value !== 'all'
 })
 
 // Clear all filters
 const clearFilters = () => {
   searchQuery.value = ''
   selectedRatingFilter.value = 'all'
+  sortBy.value = 'all'
 }
 
-// Filter jokes based on search query and rating filter
+// Filter and sort jokes based on search query, rating filter, and sorting
 const filteredJokes = computed(() => {
   if (!savedJokes.value) return []
 
@@ -123,6 +141,26 @@ const filteredJokes = computed(() => {
       const rating = parseInt(selectedRatingFilter.value)
       filtered = filtered.filter(joke => joke.rating === rating)
     }
+  }
+
+  // Apply sorting
+  if (sortBy.value !== 'all') {
+    filtered.sort((a, b) => {
+      switch (sortBy.value) {
+        case 'rating-high':
+          return (b.rating || 0) - (a.rating || 0)
+        case 'rating-low':
+          return (a.rating || 0) - (b.rating || 0)
+        case 'alpha-az':
+          return a.setup.toLowerCase().localeCompare(b.setup.toLowerCase())
+        case 'alpha-za':
+          return b.setup.toLowerCase().localeCompare(a.setup.toLowerCase())
+        default:
+          return 0
+      }
+    })
+  } else {
+    filtered.sort((a, b) => new Date(b.savedAt).getTime() - new Date(a.savedAt).getTime())
   }
 
   return filtered

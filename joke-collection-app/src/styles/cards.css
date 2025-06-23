@@ -1,6 +1,6 @@
 @layer components {
   .joke-card {
-    @apply bg-white rounded-lg shadow-lg p-6 mx-auto w-5/6 h-72 sm:h-56 flex flex-col;
+    @apply bg-white rounded-lg shadow-lg p-6 mx-auto w-5/6 h-80 sm:h-72 flex flex-col;
   }
   
   .joke-badge {
